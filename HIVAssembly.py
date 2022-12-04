@@ -22,7 +22,7 @@ def fonc(ont):
 	print("\nIndexing...")
 	os.system("cd "+s[4]+"/results/ ; samtools index -b aln.sorted.bam")
 	print("\ngenerate consensus sequence...")
-	os.system("samtools mpileup -uf "+ref+" "+s[4]+"/results/aln.sorted.bam | bcftools call -c | vcfutils.pl vcf2fq > "+s[4]+"/results/aln.fastq")
+	os.system("bcftools mpileup -f "+ref+" "+s[4]+"/results/aln.sorted.bam | bcftools call -c | vcfutils.pl vcf2fq > "+s[4]+"/results/aln.fastq")
 	input = SeqIO.parse(s[4]+"/results/aln.fastq", "fastq")
 	output = SeqIO.write(input, s[4]+"/results/aln_consensus.fasta" , "fasta")
 	#os.system("seqtk seq -aQ64 -q20 -n N "+s[4]+"/results/aln.fastq > "+s[4]+"/results/aln_consensus.fasta")
@@ -66,4 +66,4 @@ else:
 			print("\n\nDone..\n")
 
 os.system("rm -r "+s[4]+"/results/")
-#os.system("cd "+s[4]+" ; cat *fasta > all_consensus.fasta")
+os.system("cd "+s[4]+" ; cat *fasta > all_consensus.fasta")
