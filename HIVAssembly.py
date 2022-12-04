@@ -66,4 +66,4 @@ else:
 			print("\n\nDone..\n")
 
 os.system("rm -r "+s[4]+"/results/")
-os.system("cd "+s[4]+" ; cat *fasta > all_consensus.fasta")
+#os.system("cd "+s[4]+" ; cat *fasta > all_consensus.fasta")
