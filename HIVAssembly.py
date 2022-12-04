@@ -2,9 +2,12 @@
 
 import os
 import sys
+from Bio import SeqIO
 s = sys.argv
 if len(s) < 5 :
 	print("Usage:\n $ python HIVAssembly.py  --reads  /input/fastq  --output /output/directory\n\n NB:You can give as input a single fastq file or the folder containing only fastq files or the fastq_pass if it is about barcodes")
+	print ("\nRequirements\nsudo apt install minimap2 samtools bcftools seqtk")
+	print ("conda install -c conda-forge biopython \n OR \n pip install biopython\n")
 	sys.exit()
 
 ref = "reference/HIV_ref_sequence_NC_00182.fasta"
@@ -20,7 +23,9 @@ def fonc(ont):
 	os.system("cd "+s[4]+"/results/ ; samtools index -b aln.sorted.bam")
 	print("\ngenerate consensus sequence...")
 	os.system("samtools mpileup -uf "+ref+" "+s[4]+"/results/aln.sorted.bam | bcftools call -c | vcfutils.pl vcf2fq > "+s[4]+"/results/aln.fastq")
-	os.system("seqtk seq -aQ64 -q20 -n N "+s[4]+"/results/aln.fastq > "+s[4]+"/results/aln_consensus.fasta")
+	input = SeqIO.parse(s[4]+"/results/aln.fastq", "fastq")
+	output = SeqIO.write(input, s[4]+"/results/aln_consensus.fasta" , "fasta")
+	#os.system("seqtk seq -aQ64 -q20 -n N "+s[4]+"/results/aln.fastq > "+s[4]+"/results/aln_consensus.fasta")
 
 if s[2].find(".fastq") != -1 :
 	fonc(s[2])
